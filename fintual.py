@@ -35,6 +35,28 @@ class Portfolio:
             value += n*stock.price
         return value
     
+    # Función para visualizar el cambio de porcentajes según
+    # las acciones propuestas
+    def getNewDistribution(self, sell, buy):
+        value = self.getPrice()
+        unmodified_stocks = set(self.stocks.keys())
+        print("\n")
+        print("Stock\tAmount\tValue\tPercentage")
+        for stock, n, _ in sell:
+            tmp = self.stocks[stock]-n
+            if tmp>0:
+                print(f"{stock.name}\t{tmp:.2f}\t{tmp*stock.price:.2f}\t{tmp*stock.price*100/value:.2f}%")
+            unmodified_stocks.remove(stock)
+        for stock, n, _ in buy:
+            tmp = n+self.stocks[stock]
+            print(f"{stock.name}\t{tmp:.2f}\t{tmp*stock.price:.2f}\t{tmp*stock.price*100/value:.2f}%")
+            if stock in unmodified_stocks:
+                unmodified_stocks.remove(stock)
+        for stock in unmodified_stocks:
+            tmp = self.stocks[stock]
+            print(f"{stock.name}\t{tmp:.2f}\t{tmp*stock.price:.2f}\t{tmp*stock.price*100/value:.2f}%")
+        print("\n")
+
     # Al principio me confundí y creí que el procentaje era relativo a la cantidad de stocks,
     # después entendí que era relativo al valor de estas y del portfolio
     def rebalance(self):
@@ -87,4 +109,8 @@ class Portfolio:
         print("Stock\tAmount\tValue")
         for stock, n, val in buy:
             print(f"{stock.name}\t{n:.2f}\t{val:.2f}")
+
+        # Tendré que modificar la composición del portfolio? Yo creo que no, porque según
+        # el enunciado se busca "saber que stocks DEBERÍAN ser vendidas/compradas"
+        # no se habla de ejecutar
         return sell, buy
