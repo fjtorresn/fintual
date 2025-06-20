@@ -36,4 +36,5 @@ Representa el Portfolio, es decir, el cojunto de acciones
 * 'rebalance()': calcula qué stocks se deberían comprar o vender para acercarse a la distribución deseada
 
 Saludos
+
 Francisco
