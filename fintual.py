@@ -17,6 +17,12 @@ class Portfolio:
         self.stocks = defaultdict(int)
         # La distribución deseada se guardará de la forma {stock:porcentaje}
         self.allocated = defaultdict()
+
+    def getPrice(self):
+        value = 0
+        for stock, n in self.stocks.items():
+            value += n*stock.price
+        return value
     
     # Al principio me confundí y creí que el procentaje era relativo a la cantidad de stocks,
     # después entendí que era relativo al valor de estas y del portfolio
