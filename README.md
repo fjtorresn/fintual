@@ -22,6 +22,8 @@ Representa cada stock que conforma el Portfolio
 ### Atributos
 * 'name': Nombre de la empresa (string)
 * 'price': Precio de la acción (float)
+### Métodos
+* 'currentPrice(price)': setea el precio actual de la acción
 
 ## Clase Portfolio
 Representa el Portfolio, es decir, el cojunto de acciones
