@@ -30,3 +30,14 @@ my_portfolio.setDistribution([(aapl, 0.45),(meta,0.22),(tsla,0.18),(amzn,0.15)])
 print("\nTest 3:")
 sell3, buy3 = my_portfolio.rebalance()
 my_portfolio.getNewDistribution(sell3, buy3)
+
+# Test 4: También quiero testear si al cambiar el valor de la instancia de la acción, esto repercute en
+# el portfolio (debería hacerlo)
+print(f"Valor Portfolio antes: {my_portfolio.getPrice()}")
+aapl.currentPrice(300)
+print(f"Valor Portfolio después: {my_portfolio.getPrice()}")
+sell4, buy4 = my_portfolio.rebalance()
+my_portfolio.getNewDistribution(sell4, buy4)
+# Si funcionó, esto me hace pensar que cada Stock no debería poder instanciarse más de una vez, e.g: no
+# debería existir más de una instancia de la stock AAPL, para esto se podría utilizar herencia y el patrón 
+# de diseño singleton, pero creo que se escapa del scope de esta demo.
