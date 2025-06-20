@@ -18,6 +18,17 @@ class Portfolio:
         # La distribución deseada se guardará de la forma {stock:porcentaje}
         self.allocated = defaultdict()
 
+    # Necesito testear que esté funcionando. Para esto agrego las funciones
+    # buyStocks y setDistributios que me ayudaran a setear el portfolio
+    def buyStocks(self, stocks):
+        for stock, n in stocks:
+            self.stocks[stock] += n
+    
+    def setDistribution(self, dist):
+        self.allocated = defaultdict()
+        for stock, d in dist:
+            self.allocated[stock] = d
+
     def getPrice(self):
         value = 0
         for stock, n in self.stocks.items():
@@ -36,11 +47,13 @@ class Portfolio:
         sell = []
         buy = []
         # Voy a iterar sobre los stocks del portfolio, sin embargo, pueden haber
-        # stocks requeridos que no estén en él. Por lo tanto, guardaré
-        # un set con las stocks que deseo tener, a medida que vaya revisando las
-        # stocks que tengo las eliminaré del set y luego revisaré las que quedan
-        # para agregarlas a la lista de las que hay que comprar.
-        aimed_stocks = set(self.allocated.keys())
+        # stocks requeridos que no estén en él. 
+        # ~~Por lo tanto, guardaré un set con las stocks que deseo tener, a medida 
+        # que vaya revisando las stocks que tengo las eliminaré del set y luego 
+        # revisaré las que quedan para agregarlas a la lista de las que hay que comprar~~
+        # Mejor utilizaré directamente la resta de los sets, la complejidad algoritmica es
+        # la misma y es más legible
+        stocks_i_dont_have = set(self.allocated.keys()) - set(self.stocks.keys())
         for stock, n in self.stocks.items():
             # Si la stock no está entre la que pretendo tener, hay que venderla
             if stock not in self.allocated:
@@ -57,17 +70,16 @@ class Portfolio:
                     sell.append((stock, diff/stock.price, diff))
                 else:
                     buy.append((stock, diff*-1/stock.price, diff*-1))
-                aimed_stocks.remove(stock)
         # Ahora tengo que hacerme cargo de las stock que deseo tener pero que no he revisado, para
-        # eso reviso las stocks que quedan en aimed_stocks y las agrego en la lista de compra
-        for stock in aimed_stocks:
+        # eso reviso las stocks en i_dont_have y las agrego en la lista de compra
+        for stock in stocks_i_dont_have:
             buy.append((stock, value*self.allocated[stock]/stock.price, value*self.allocated[stock]))
 
         # En este punto ya tengo la información requerida en las listas sell y buy.
         # Mostraré la info contenida y retornaré ambas listas, sin embargo, en la práctica,
         # qué hacer ahora estará determinado por cómo se quiera manejar la info
 
-        print("Sell:")
+        print("\nSell:")
         print("Stock\tAmount\tValue")
         for stock, n, val in sell:
             print(f"{stock.name}\t{n:.2f}\t{val:.2f}")
